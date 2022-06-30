@@ -1,10 +1,45 @@
 import { useEffect } from "react";
+import { useReducer } from "react";
 import { useState } from "react";
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
 
+function todoReducer(state, action) {
+  switch (action.type) {
+    case "FETCH_TODOS": {
+      return {
+        ...state,
+        todoList: action.todoList,
+      };
+    }
+    case "ADD_TODO": {
+      return {
+        ...state,
+        todoList: [...state.todoList, action.todo],
+      };
+    }
+    case "UPDATE_TODO": {
+      return {
+        ...state,
+        todoList: state.todoList.map((t) =>
+          t._id === action.todo._id ? action.todo : t
+        ),
+      };
+    }
+    case "DELETE_TODO": {
+      return {
+        ...state,
+        todoList: state.todoList.filter((t) => t._id !== action.todo._id),
+      };
+    }
+    default: {
+      throw new Error("Action inconnue");
+    }
+  }
+}
+
 function App() {
-  const [todoList, setTodoList] = useState([]);
+  const [state, dispatch] = useReducer(todoReducer, { todoList: [] });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -16,9 +51,9 @@ function App() {
           const todos = await response.json();
           if (!shouldCancel) {
             if (Array.isArray(todos)) {
-              setTodoList(todos);
+              dispatch({ type: "FETCH_TODOS", todoList: todos });
             } else {
-              setTodoList([todos]);
+              dispatch({ type: "FETCH_TODOS", todoList: [todos] });
             }
           }
         } else {
@@ -37,17 +72,15 @@ function App() {
   }, []);
 
   function addTodo(newTodo) {
-    setTodoList([...todoList, newTodo]);
+    dispatch({ type: "ADD_TODO", todo: newTodo });
   }
 
   function deleteTodo(deletedTodo) {
-    setTodoList(todoList.filter((t) => t._id !== deletedTodo._id));
+    dispatch({ type: "DELETE_TODO", todo: deletedTodo });
   }
 
   function updateTodo(updatedTodo) {
-    setTodoList(
-      todoList.map((t) => (t._id === updatedTodo._id ? updatedTodo : t))
-    );
+    dispatch({ type: "UPDATE_TODO", todo: updatedTodo });
   }
 
   return (
@@ -59,7 +92,7 @@ function App() {
           <p>Chargement en cours</p>
         ) : (
           <TodoList
-            todoList={todoList}
+            todoList={state.todoList}
             deleteTodo={deleteTodo}
             updateTodo={updateTodo}
           />
