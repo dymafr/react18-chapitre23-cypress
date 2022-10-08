@@ -46,7 +46,7 @@ function App() {
     let shouldCancel = false;
     async function fetchTodoList() {
       try {
-        const response = await fetch(`https://restapi.fr/api/rtodo`);
+        const response = await fetch(`https://restapi.fr/api/rtodocy`);
         if (response.ok) {
           const todos = await response.json();
           if (!shouldCancel) {

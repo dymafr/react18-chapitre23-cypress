@@ -2,19 +2,20 @@ import { useState } from "react";
 
 function EditTodo({ todo, updateTodo }) {
   const [value, setValue] = useState(todo.content);
-  const [loading, setLoading] = useState(false);
 
   async function tryUpdateTodo(newTodo) {
     try {
-      setLoading(true);
       const { _id, ...newTodoWithoutId } = newTodo;
-      const response = await fetch(`https://restapi.fr/api/rtodo/${todo._id}`, {
-        method: "PATCH",
-        body: JSON.stringify(newTodoWithoutId),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://restapi.fr/api/rtodocy/${todo._id}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify(newTodoWithoutId),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (response.ok) {
         const newTodo = await response.json();
         updateTodo(newTodo);
@@ -23,8 +24,6 @@ function EditTodo({ todo, updateTodo }) {
       }
     } catch (e) {
       console.log("Erreur");
-    } finally {
-      setLoading(false);
     }
   }
 

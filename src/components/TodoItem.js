@@ -7,13 +7,16 @@ function TodoItem({ todo, deleteTodo, updateTodo }) {
     try {
       setLoading(true);
       const { _id, ...newTodoWithoutId } = newTodo;
-      const response = await fetch(`https://restapi.fr/api/rtodo/${todo._id}`, {
-        method: "PATCH",
-        body: JSON.stringify(newTodoWithoutId),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://restapi.fr/api/rtodocy/${todo._id}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify(newTodoWithoutId),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (response.ok) {
         const newTodo = await response.json();
         updateTodo(newTodo);
@@ -30,9 +33,12 @@ function TodoItem({ todo, deleteTodo, updateTodo }) {
   async function handleClickDeleteTodo() {
     try {
       setLoading(true);
-      const response = await fetch(`https://restapi.fr/api/rtodo/${todo._id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `https://restapi.fr/api/rtodocy/${todo._id}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (response.ok) {
         deleteTodo(todo);
       } else {
