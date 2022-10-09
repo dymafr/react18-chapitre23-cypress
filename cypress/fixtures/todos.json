@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "1",
+    "content": "Manger une pomme",
+    "edit": false,
+    "done": false
+  },
+  {
+    "_id": "2",
+    "content": "Apprendre JavaScript",
+    "edit": false,
+    "done": true
+  },
+  {
+    "_id": "3",
+    "content": "Jouer du piano",
+    "edit": false,
+    "done": true
+  },
+  {
+    "_id": "4",
+    "content": "Soulever de la fonte",
+    "edit": true,
+    "done": false
+  }
+]
